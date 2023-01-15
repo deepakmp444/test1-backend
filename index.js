@@ -35,7 +35,7 @@ app.post("/message", async (req, res) => {
 
 // Make Cookies
 app.get("/message/a", async (req, res) => {
-  res.cookie("message", "Deepak Kumar").json({ status: "true" });
+  res.cookie("Deepak", "Deepak Kumar").json({ status: "true" });
 });
 
 
