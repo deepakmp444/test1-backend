@@ -38,6 +38,22 @@ app.post("/message", async (req, res) => {
   }
 });
 
+ app.post("/setCookie", (req, res) => {
+        const { name, value, options } = req.body;
+        res.cookie(name, value, options);
+        res.status(200).send("Cookie set successfully!");
+    });
+
+ app.get("/getCookie", (req, res) => {
+        const { name } = req.query;
+        const value = req.cookies[name];
+        if (value) {
+          res.status(200).send({ value });
+        } else {
+          res.status(404).send("Cookie not found!");
+        }
+    });
+
 // get cookies
 app.get("/message", async (req, res) => {
   const cookieMessage = req.cookies.message;
