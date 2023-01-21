@@ -8,8 +8,10 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    credentials: true,
     origin: ["https://test1-frontend.vercel.app"],
+    credentials: true,
+allowedHeaders: ['Content-Type', 'x-auth-token'],
+methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE"
   })
 );
 
