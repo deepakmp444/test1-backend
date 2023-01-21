@@ -8,10 +8,8 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: ["https://test1-frontend.vercel.app"],
     credentials: true,
-allowedHeaders: ['Content-Type', 'x-auth-token'],
-methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE"
+    origin: ["https://test1-frontend.vercel.app", "http://localhost:3000"],
   })
 );
 
@@ -21,14 +19,15 @@ const PORT = process.env.PORT || 4000;
 app.post("/message", async (req, res) => {
   const { message } = req.body;
   console.log("message:", message);
-  const options = {
-    expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-    httpOnly: true,
-    secure: true,
-    sameSite: "strict",
-    path: "/",
-  };
   try {
+    const options = {
+      expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+      secure: true,
+      httpOnly: true,
+      sameSite: "lax",
+      path: "/",
+    };
+
     res
       .status(201)
       .cookie("message", message, options)
@@ -37,22 +36,6 @@ app.post("/message", async (req, res) => {
     res.status(500).json({ status: "false" });
   }
 });
-
- app.post("/setCookie", (req, res) => {
-        const { name, value, options } = req.body;
-        res.cookie(name, value, options);
-        res.status(200).send("Cookie set successfully!");
-    });
-
- app.get("/getCookie", (req, res) => {
-        const { name } = req.query;
-        const value = req.cookies[name];
-        if (value) {
-          res.status(200).send({ value });
-        } else {
-          res.status(404).send("Cookie not found!");
-        }
-    });
 
 // get cookies
 app.get("/message", async (req, res) => {
