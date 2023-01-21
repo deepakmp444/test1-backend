@@ -5,62 +5,43 @@ const cors = require("cors");
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
-const port = 4000;
 
-app.post("/login", async (req, res) => {
-  const { email_id, password } = req.body;
-  const userAuth = [
-    { email_id: "sample@gmail.com", password: "1234" },
-    { email_id: "sample1@gmail.co", password: "9876" },
-  ];
-  const isMatchingCredential = userAuth.some(
-    (credential) =>
-      credential.email_id === email_id && credential.password === password
-  );
-  if (isMatchingCredential) {
-    // email_id and password match a credential in userAuth
-    res.json({ isMatchingCredential });
-  } else {
-    // email_id and password do not match any credentials in userAuth
-    res.json({ isMatchingCredential });
-  }
-});
+app.use(
+  cors({
+    credentials: true,
+    origin: ["https://test1-frontend.vercel.app"],
+  })
+);
 
-// insert text
+const PORT = process.env.PORT || 4000;
+
+// insert cookies
 app.post("/message", async (req, res) => {
   const { message } = req.body;
-  res.cookie("message", Deepka).json({ status: "true" });
-});
-
-// Make Cookies
-app.get("/message/a", async (req, res) => {
-  res.cookie("Deepak", "Deepak Kumar").json({ status: "true" });
-});
-
-
-// search text
-app.get("/message", async (req, res) => {
-  const query = req.query;
-  const cookieMessage = req.cookies.message;
-  const text = query.text;
-  if (text === cookieMessage) {
-    res.json({ text });
-  } else {
-    res.json({ text: "Not Found" });
+  console.log("message:", message);
+  const options = {
+    expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+    httpOnly: true,
+    secure: true,
+    sameSite: "strict",
+    path: "/",
+  };
+  try {
+    res
+      .status(201)
+      .cookie("message", message, options)
+      .json({ status: "true" });
+  } catch (error) {
+    res.status(500).json({ status: "false" });
   }
 });
 
-// clear text
-app.get("/clear", async (req, res) => {
-  res.clearCookie("message").json({ status: "true" });
+// get cookies
+app.get("/message", async (req, res) => {
+  const cookieMessage = req.cookies.message;
+  res.status(200).json({ cookieMessage });
 });
 
-// logout
-app.get("/logout", async (req, res) => {
-  res.json({ status: "true" });
-});
-
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
 });
