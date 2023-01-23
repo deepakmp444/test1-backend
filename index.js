@@ -26,6 +26,7 @@ app.post("/message", async (req, res) => {
       httpOnly: true,
       sameSite: "lax",
       path: "/",
+      origin:"https://test1-frontend.vercel.app"
     };
 
     res
