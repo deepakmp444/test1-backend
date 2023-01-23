@@ -40,6 +40,7 @@ app.post("/message", async (req, res) => {
 // get cookies
 app.get("/message", async (req, res) => {
   const cookieMessage = req.cookies.message;
+  console.log("cookieMessage",cookieMessage)
   res.status(200).json({ cookieMessage });
 });
 
