@@ -1,5 +1,3 @@
-Cookies
-
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const app = express();
@@ -44,6 +42,12 @@ app.post("/message", async (req, res) => {
 app.get("/message", async (req, res) => {
   const cookieMessage = req.cookies.message;
   res.status(200).json({ cookieMessage });
+});
+
+// get cookies
+app.get("/clear", async (req, res) => {
+  const cookieMessage = req.cookies.message;
+  res.status(200).clearCookie('message').json({ cookieMessage });
 });
 
 app.listen(PORT, () => {
