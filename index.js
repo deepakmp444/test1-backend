@@ -51,6 +51,12 @@ app.post("/clear", async (req, res) => {
   return res.status(200).json({ cookieMessage });
 });
 
+// get smAddress cookies
+app.post("/smaddress", async (req, res) => {
+  const smAddress = req.cookies.smAddress;
+  return res.status(200).json({ smAddress });
+});
+
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
