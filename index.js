@@ -1,3 +1,5 @@
+Cookies
+
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const app = express();
@@ -24,7 +26,9 @@ app.post("/message", async (req, res) => {
       expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
       secure: true,
       httpOnly: true,
+      sameSite: "none",
       path: "/",
+      origin:"https://test1-frontend.vercel.app"
     };
 
     res
@@ -39,7 +43,6 @@ app.post("/message", async (req, res) => {
 // get cookies
 app.get("/message", async (req, res) => {
   const cookieMessage = req.cookies.message;
-  console.log("cookieMessage",cookieMessage)
   res.status(200).json({ cookieMessage });
 });
 
