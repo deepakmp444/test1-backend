@@ -24,7 +24,7 @@ app.post("/message", async (req, res) => {
       expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
       secure: true,
       httpOnly: true,
-      sameSite: "none",
+      sameSite: "lax",
       path: "/",
       origin:"https://test1-frontend.vercel.app"
     };
@@ -44,10 +44,11 @@ app.get("/message", async (req, res) => {
   res.status(200).json({ cookieMessage });
 });
 
-// get cookies
+// Clear Cookies
 app.get("/clear", async (req, res) => {
   const cookieMessage = req.cookies.message;
-  res.status(200).clearCookie('message').json({ cookieMessage });
+  res.clearCookie("message");
+  return res.status(200).json({ cookieMessage });
 });
 
 app.listen(PORT, () => {
