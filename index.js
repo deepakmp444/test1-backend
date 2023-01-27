@@ -47,7 +47,7 @@ app.get("/message", async (req, res) => {
 // Clear Cookies
 app.post("/clear", async (req, res) => {
   const cookieMessage = req.cookies.message;
-  res.clearCookie("message");
+    res.clearCookie("message", { sameSite: "none", secure: true })
   return res.status(200).json({ cookieMessage });
 });
 
